@@ -1,4 +1,4 @@
-import { PrismaClient } from "./generated/prisma"
+import { PrismaClient } from "@prisma/client"
 // houve mudança na importação do PrismaClient, agora é importado de app/generated/prisma
 // o import precisa ser: import { PrismaClient } from "../app/generated/prisma"; 2 - no package.json: "prisma": { "seed": "tsx prisma/seed.ts" }, 3 - comando no terminal: npx prisma db seed
 //lembrar de instalar o ts-node: npm install ts-node --save-dev
