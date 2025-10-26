@@ -1,23 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
-import React from "react"
-import { Button } from "./ui/button"
-import { MenuIcon } from "lucide-react"
+import SidebarItem from "./sidebar-item"
+import Link from "next/link"
 
 const Header = () => {
   return (
     <div>
       <Card>
         <CardContent className="flex items-center justify-between p-4">
-          <Image
-            src="/logo.svg"
-            alt="Barber Link Logo"
-            width={120}
-            height={18}
-          />
-          <Button size="icon" variant="outline">
-            <MenuIcon />
-          </Button>
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="Barber Link Logo"
+              width={120}
+              height={18}
+            />
+          </Link>
+
+          <SidebarItem />
         </CardContent>
       </Card>
     </div>
