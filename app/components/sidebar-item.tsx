@@ -24,12 +24,15 @@ import {
 } from "@/components/ui/dialog"
 import { signIn, signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const SidebarItem = () => {
   const { data } = useSession()
   console.log(data?.user)
   const handleLoginWithGoogle = () => signIn("google")
   const handleLogoutWithGoogle = () => signOut()
+
+  const pathname = usePathname()
 
   return (
     <Sheet>
@@ -98,7 +101,7 @@ const SidebarItem = () => {
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-4">
           <div className="border-b border-solid pb-4">
             <Button
-              className="bg-primary flex w-full items-center justify-start gap-2"
+              className={`flex w-full items-center justify-start gap-2  ${pathname === '/' ? 'bg-primary' : ''}  `}
               variant="ghost"
             >
               <Image
@@ -108,11 +111,11 @@ const SidebarItem = () => {
                 width={16}
                 height={16}
               />{" "}
-              Inicio
+              <Link href="/">Inicio</Link>
             </Button>
             <Button
               variant="ghost"
-              className="flex w-full items-center justify-start gap-2"
+              className={`flex w-full items-center justify-start gap-2 ${pathname === '/agendamentos' ? 'bg-primary': ''}`}  
             >
               <Image
                 src="/calendar.svg"
@@ -120,7 +123,7 @@ const SidebarItem = () => {
                 width={16}
                 height={16}
               />{" "}
-              Agendamento
+              <Link href="/agendamentos">Agendamento</Link>
             </Button>
           </div>
 

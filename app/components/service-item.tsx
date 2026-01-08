@@ -7,7 +7,11 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, 
 import { Calendar } from "@/components/ui/calendar"
 import { ptBR } from "date-fns/locale"
 import { useState } from "react"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
+import { createBooking } from "../_actions/create-booking"
+import { toast } from "sonner"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 
 interface ServiceItemProps {
@@ -18,8 +22,11 @@ interface ServiceItemProps {
 const availableTimes = ["09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const { data } = useSession()
   const [selectDay, setSelectDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined)
+  const router = useRouter()
+
 
   const handleSelectDay = (day: Date | undefined) => {
     setSelectDay(day)
@@ -28,6 +35,33 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const handleSelectTime = (time: string) => {
     setSelectedTime(time)
   }
+
+  const handleCreateBooking = async () => {
+    try {
+      if (!selectDay || !selectedTime) {
+        toast.error("Por favor, selecione uma data e horário.")
+        return
+      }
+
+      const hour = Number(selectedTime?.split(":")[0])
+      const minute = Number(selectedTime?.split(":")[1])
+      const newDate = set(selectDay, { minutes: minute, hours: hour })
+
+      await createBooking({
+        userId: (data?.user as any).id, // Replace with actual user ID
+        serviceId: service.id,
+        date: newDate,
+      })
+      toast.success("Reserva criada com sucesso!")
+      router.push("/agendamentos")
+    }
+    catch (error) { 
+      console.error(error)
+      toast.error("Erro ao criar reserva. Tente novamente.")
+    }
+    
+  }
+
 
   return (
     <Card className="mt-6">
@@ -60,7 +94,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
               </SheetTrigger>
               <SheetContent className="px-0">
                 <SheetHeader>
-                  <SheetTitle>Fazer Reserva</SheetTitle>
+                  <SheetTitle>Fazer R eserva</SheetTitle>
                 </SheetHeader>
 
                 <div className="border-b border-solid py-5">
@@ -132,8 +166,8 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                   </div>
                 )}
                 <SheetFooter className="px-5">
-                  <SheetClose>
-                    <Button type="submit" className="w-full">Confirmar</Button>
+                  <SheetClose asChild>
+                    <Button onClick={async () => await handleCreateBooking()} className="w-full">Confirmar</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>

@@ -58,7 +58,7 @@ export default async function Home() {
           />
         </div>
 
-        {/* Agendamentos */}
+       <p className="font-bold text-xs mt-4 text-gray-500">AGENDAMENTOS</p>
 
         <BookingItem />
 
@@ -78,7 +78,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
