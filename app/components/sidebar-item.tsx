@@ -81,7 +81,7 @@ const SidebarItem = () => {
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-4">
           <div className="border-b border-solid pb-4">
             <Button
-              className={`flex w-full items-center justify-start gap-2  ${pathname === '/' ? 'bg-primary' : ''}  `}
+              className={`flex w-full items-center justify-start gap-2 ${pathname === "/" ? "bg-primary" : ""} `}
               variant="ghost"
             >
               <Image
@@ -95,7 +95,7 @@ const SidebarItem = () => {
             </Button>
             <Button
               variant="ghost"
-              className={`flex w-full items-center justify-start gap-2 ${pathname === '/agendamentos' ? 'bg-primary': ''}`}  
+              className={`flex w-full items-center justify-start gap-2 ${pathname === "/agendamentos" ? "bg-primary" : ""}`}
             >
               <Image
                 src="/calendar.svg"
@@ -132,14 +132,16 @@ const SidebarItem = () => {
             ))}
           </div>
           {/* Footer */}
-          <div>
-            <SheetClose asChild>
-              <Button variant="ghost" onClick={handleLogoutWithGoogle}>
-                <LogOut />
-                Sair da conta
-              </Button>
-            </SheetClose>
-          </div>
+          {data?.user && (
+            <div>
+              <SheetClose asChild>
+                <Button variant="ghost" onClick={handleLogoutWithGoogle}>
+                  <LogOut />
+                  Sair da conta
+                </Button>
+              </SheetClose>
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>
