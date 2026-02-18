@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import {Dialog,DialogClose,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogTrigger,} from "@/components/ui/dialog"
 import getBookings from "../_actions/get-bookings"
+import SignInDialog from "./sign-in-dialog"
 
 
 
@@ -58,6 +59,7 @@ const getTimeList = (bookings: Booking[])=> {
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const { data } = useSession()
+  const [loggedInUser, setLoggedInUser] = useState(false)
   const [selectDay, setSelectDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined)
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -103,6 +105,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   setDialogOpen(true)
   }
 
+  const handleDialogOpen = () => {
+    if(data?.user) {
+      return setSheetOpen(true)
+    } 
+      return setLoggedInUser(true)
+  }
+
   useEffect(() => {
     const fetch = async () => {
       if (!selectDay) return
@@ -112,10 +121,10 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     fetch()
   },[selectDay, service.id])
 
-  console.log(dayBookings, ' days bookings')
-
 
   return (
+
+    <>
     <Card className="mt-6">
       <CardContent className="flex items-center gap-3 p-3">
         <div className="relative max-h-[110px] min-h-[110px] max-w-[110px] min-w-[110px]">
@@ -139,14 +148,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
             </span>
 
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-              <SheetTrigger asChild>
-                <Button size="sm" variant="secondary">
+              
+                <Button size="sm" variant="secondary" onClick={handleDialogOpen}>
                   Reservar
                 </Button>
-              </SheetTrigger>
+       
               <SheetContent className="px-0">
                 <SheetHeader>
-                  <SheetTitle>Fazer Reserva</SheetTitle>
+                  <SheetTitle>Fazer Reserva teste</SheetTitle>
                 </SheetHeader>
 
                 <div className="border-b border-solid py-5">
@@ -288,6 +297,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         </div>
       </CardContent>
     </Card>
+
+      <Dialog open={loggedInUser} onOpenChange={(open) => setLoggedInUser(open)}>
+        <DialogContent className="w-[90%]">
+          <SignInDialog/>
+        </DialogContent>
+    </Dialog>
+    </>
   )
 }
 

@@ -17,19 +17,17 @@ import { LogInIcon, LogOut, MenuIcon } from "lucide-react"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { signIn, signOut, useSession } from "next-auth/react"
+import {signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import SignInDialog from "./sign-in-dialog"
 
 const SidebarItem = () => {
   const { data } = useSession()
   console.log(data?.user)
-  const handleLoginWithGoogle = () => signIn("google")
+  
   const handleLogoutWithGoogle = () => signOut()
 
   const pathname = usePathname()
@@ -59,25 +57,7 @@ const SidebarItem = () => {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="w-[90vw] max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Faça login na plataforma</DialogTitle>
-                    <DialogDescription>
-                      Conecte-se usando sua conta do Google
-                    </DialogDescription>
-                  </DialogHeader>
-                  <Button
-                    onClick={handleLoginWithGoogle}
-                    variant="outline"
-                    className="gap-2 font-bold"
-                  >
-                    <Image
-                      src="/google.svg"
-                      alt="fazer login com google"
-                      width={18}
-                      height={18}
-                    />
-                    Google
-                  </Button>
+                  <SignInDialog />
                 </DialogContent>
               </Dialog>
             </>

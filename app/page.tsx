@@ -13,9 +13,9 @@ import { isFuture } from "date-fns"
 
 export default async function Home() {
     const session = await getServerSession(authOptions)
-    if (!session?.user) {
-      return <p>Você precisa estar logado</p>
-    }
+    // if (!session?.user) {
+    //   return <p>Você precisa estar logado</p>
+    // }
   const barberShops = await db.barberShop.findMany({})
   const popularBarberShops = await db.barberShop.findMany({
     orderBy: {
@@ -25,7 +25,7 @@ export default async function Home() {
 
     const bookings = await db.booking.findMany({
     where: {
-      userId: (session.user as any).id,
+      // userId: (session.user as any).id,
     },
     include: {
       service: {
