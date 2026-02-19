@@ -1,15 +1,16 @@
 import Header from "../components/header"
 import BookingItem from "../components/booking-item"
 import { getServerSession } from "next-auth"
-import { authOptions } from "../api/auth/[...nextauth]/route"
 import { db } from "../_lib/prisma"
 import { isFuture, isPast } from "date-fns"
+import { authOptions } from "../_lib/auth"
+import { notFound } from "next/navigation"
 
 
-const AgendamentosPage = async () => {
+const Appointments = async () => {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
-    return <p>Você precisa estar logado</p>
+    return notFound()
   }
   const bookings = await db.booking.findMany({
     where: {
@@ -63,4 +64,4 @@ const AgendamentosPage = async () => {
   )
 }
 
-export default AgendamentosPage
+export default Appointments

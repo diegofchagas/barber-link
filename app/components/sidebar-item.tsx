@@ -13,7 +13,7 @@ import { Button } from "./ui/button"
 import Image from "next/image"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { searchForServices } from "../_constants/search-for-services"
-import { LogInIcon, LogOut, MenuIcon } from "lucide-react"
+import { Calendar, CalendarIcon, HomeIcon, LogInIcon, LogOut, MenuIcon } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -84,26 +84,17 @@ const SidebarItem = () => {
               className={`flex w-full items-center justify-start gap-2 ${pathname === "/" ? "bg-primary" : ""} `}
               variant="ghost"
             >
-              <Image
-                className="text-left"
-                src="/home.svg"
-                alt="home"
-                width={16}
-                height={16}
-              />{" "}
+              <HomeIcon size={18} />
               <Link href="/">Inicio</Link>
             </Button>
             <Button
               variant="ghost"
               className={`flex w-full items-center justify-start gap-2 ${pathname === "/agendamentos" ? "bg-primary" : ""}`}
             >
-              <Image
-                src="/calendar.svg"
-                alt="agendamento"
-                width={16}
-                height={16}
-              />{" "}
-              <Link href="/agendamentos">Agendamento</Link>
+              <CalendarIcon size={18} />
+              <Link href="/agendamentos">
+                Agendamentos
+              </Link>
             </Button>
           </div>
 

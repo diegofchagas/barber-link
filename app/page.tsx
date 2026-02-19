@@ -8,8 +8,8 @@ import BookingItem from "./components/booking-item"
 import Search from "./components/search"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
-import { authOptions } from "./api/auth/[...nextauth]/route"
 import { isFuture } from "date-fns"
+import { authOptions } from "./_lib/auth"
 
 export default async function Home() {
     const session = await getServerSession(authOptions)
@@ -23,9 +23,9 @@ export default async function Home() {
     },
   })
 
-    const bookings = await db.booking.findMany({
+    const bookings = session?.user ? await db.booking.findMany({
     where: {
-      // userId: (session.user as any).id,
+      userId: (session.user as any).id,
     },
     include: {
       service: {
@@ -37,16 +37,16 @@ export default async function Home() {
     orderBy: {
       date: "asc",
     },
-    })
+    }) : []
   
-   const confirmedBookings = bookings.filter((booking) => {return isFuture(new Date(booking.date))} )
+  const confirmedBookings = bookings.filter((booking) => { return isFuture(new Date(booking.date)) })
   return (
     <div>
       <Header />
 
       <div className="p-5">
-        <h2 className="text-xl font-bold">Olá, Diego</h2>
-        <p>Sexta, 2 de Fevereiro</p>
+        <h2 className="text-xl font-bold">Olá, {session?.user?.name}</h2>
+        <p>{new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}</p>
 
         <div className="mt-6">
           <Search />
@@ -82,16 +82,13 @@ export default async function Home() {
           />
         </div>
 
-       <p className="font-bold text-xs mt-4 text-gray-500">AGENDAMENTOS</p>
-
-        {/* tenho que buscar do banco de dados os angedamentos */}
-    {confirmedBookings.length > 0 && (
-          <div className="mt-4">
-            <strong className="text-xs text-gray-500">CONFIRMADOS</strong>
-            {confirmedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
-          </div>
+        {confirmedBookings.length > 0 && (
+            <div className="mt-4">
+              <strong className="text-xs text-gray-500">AGENDAMENTOS</strong>
+              {confirmedBookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
         )}
 
         {/* Barbearias */}
