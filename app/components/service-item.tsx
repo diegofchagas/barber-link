@@ -88,7 +88,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       const newDate = set(selectDay, { minutes: minute, hours: hour })
 
       await createBooking({
-        userId: (data?.user as any).id, // Replace with actual user ID
+        //userId: (data?.user as any).id, // Replace with actual user ID
         serviceId: service.id,
         date: newDate,
       })
