@@ -46,7 +46,13 @@ export default async function Home() {
 
       <div className="p-5">
         <h2 className="text-xl font-bold">Olá, {session?.user?.name}</h2>
-        <p>{new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}</p>
+        <p>
+          {new Date().toLocaleDateString("pt-BR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          })}
+        </p>
 
         <div className="mt-6">
           <Search />
@@ -83,12 +89,14 @@ export default async function Home() {
         </div>
 
         {confirmedBookings.length > 0 && (
-            <div className="mt-4">
-              <strong className="text-xs text-gray-500">AGENDAMENTOS</strong>
+          <>
+            <strong className="text-xs text-gray-500">AGENDAMENTOS</strong>
+            <div className="mt-2 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
               {confirmedBookings.map((booking) => (
                 <BookingItem key={booking.id} booking={booking} />
               ))}
             </div>
+          </>
         )}
 
         {/* Barbearias */}

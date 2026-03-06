@@ -29,7 +29,7 @@ if (!booking) return null;
     <>
       {/* <p>Agendamentos</p> */}
 
-      <Card className="mt-2">
+      <Card className="mt-2 min-w-[80%]">
         <CardContent className="flex justify-between p-0">
           <div className="flex flex-col gap-2 py-5 pl-5">
             <Badge variant={isConfirmed ? 'default' : 'outline'}>{ isConfirmed ? 'Confirmado': 'Finalizado'}</Badge>
